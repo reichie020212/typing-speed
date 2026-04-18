@@ -38,9 +38,7 @@ export function Toggle<T extends string | number>({
       aria-disabled={disabled}
     >
       {label ? (
-        <span className="text-xs uppercase tracking-widest text-[color:var(--muted)]">
-          {label}
-        </span>
+        <span className="text-xs uppercase tracking-widest text-[color:var(--muted)]">{label}</span>
       ) : null}
       <div
         className={`inline-flex rounded-md border border-[color:var(--border)] bg-[color:var(--surface)] ${disabled ? 'opacity-50' : ''}`}

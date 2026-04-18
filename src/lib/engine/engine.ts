@@ -81,9 +81,7 @@ export function createEngine(config: EngineConfig): TypingEngine {
     if (state.status === 'finished') return;
     if (char.length !== 1) return;
     const starting = state.status === 'idle';
-    const base: EngineState = starting
-      ? { ...state, status: 'running', startedAt: now() }
-      : state;
+    const base: EngineState = starting ? { ...state, status: 'running', startedAt: now() } : state;
     const expected = source[base.cursor];
     const correct = char === expected;
     const evt: KeyEvent = {

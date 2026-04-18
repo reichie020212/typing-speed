@@ -1,5 +1,5 @@
-export { createEngine } from './engine';
 export type { TypingEngine } from './engine';
+export { createEngine } from './engine';
 export type {
   CharStats,
   Difficulty,

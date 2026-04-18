@@ -1,5 +1,5 @@
 import type { Difficulty } from '@/lib/engine/types';
-import { type Passage, PASSAGES } from './passages';
+import { PASSAGES, type Passage } from './passages';
 import { WORDS_EASY, WORDS_HARD, WORDS_MEDIUM } from './words';
 
 function mulberry32(seed: number): () => number {
@@ -27,10 +27,7 @@ function rng(seed?: string): () => number {
   return Math.random;
 }
 
-export function pickPassage(opts: {
-  length: 'short' | 'medium' | 'long';
-  seed?: string;
-}): Passage {
+export function pickPassage(opts: { length: 'short' | 'medium' | 'long'; seed?: string }): Passage {
   const pool = PASSAGES.filter((p) => p.length === opts.length);
   if (pool.length === 0) throw new Error(`No passages of length ${opts.length}`);
   const r = rng(opts.seed);
@@ -43,11 +40,7 @@ export function pickPassage(opts: {
 const PUNCT_SUFFIXES = [',', '.', ';', "'"];
 const HARD_PUNCT_PROBABILITY = 0.12;
 
-export function pickWords(opts: {
-  tier: Difficulty;
-  count: number;
-  seed?: string;
-}): string[] {
+export function pickWords(opts: { tier: Difficulty; count: number; seed?: string }): string[] {
   const pool =
     opts.tier === 'easy' ? WORDS_EASY : opts.tier === 'medium' ? WORDS_MEDIUM : WORDS_HARD;
   const r = rng(opts.seed);

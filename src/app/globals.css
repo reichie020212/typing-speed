@@ -1,11 +1,11 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme inline {
   --font-mono: var(--typing-font-mono);
 }
 
 :root,
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   --bg: #0d0f12;
   --fg: #e6e8eb;
   --muted: #5a6170;
@@ -18,7 +18,7 @@ html[data-theme='dark'] {
   color-scheme: dark;
 }
 
-html[data-theme='light'] {
+html[data-theme="light"] {
   --bg: #fafafa;
   --fg: #111318;
   --muted: #6b7280;
@@ -38,8 +38,7 @@ body {
 }
 
 body {
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;

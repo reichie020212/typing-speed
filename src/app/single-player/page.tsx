@@ -99,6 +99,7 @@ function Runner({ engineConfig, modeConfig, onRegenerate }: RunnerProps) {
   const nextBtnRef = useRef<HTMLButtonElement>(null);
   const [pasteToast, setPasteToast] = useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional — refocus invisible input on status transitions (idle/running/finished) so keyboard input stays captured.
   useEffect(() => {
     inputRef.current?.focus();
   }, [state.status]);

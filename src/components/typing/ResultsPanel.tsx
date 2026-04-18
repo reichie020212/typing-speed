@@ -29,13 +29,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function ResultsPanel({
-  result,
-  onNext,
-  onRestart,
-  onChangeMode,
-  nextButtonRef,
-}: Props) {
+export function ResultsPanel({ result, onNext, onRestart, onChangeMode, nextButtonRef }: Props) {
   return (
     <div className="mx-auto mt-8 flex w-full max-w-2xl flex-col gap-6 rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)] p-6">
       <div className="flex items-baseline justify-around">
