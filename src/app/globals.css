@@ -1,26 +1,52 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import 'tailwindcss';
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--typing-font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root,
+html[data-theme='dark'] {
+  --bg: #0d0f12;
+  --fg: #e6e8eb;
+  --muted: #5a6170;
+  --faint: #2a2f38;
+  --accent: #6ee7b7;
+  --danger: #f87171;
+  --success: #34d399;
+  --border: #1e232c;
+  --surface: #131620;
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  --bg: #fafafa;
+  --fg: #111318;
+  --muted: #6b7280;
+  --faint: #d5d8de;
+  --accent: #059669;
+  --danger: #dc2626;
+  --success: #059669;
+  --border: #e5e7eb;
+  --surface: #ffffff;
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
