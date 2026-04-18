@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# typing-speed
 
-## Getting Started
+A typing speed game. Phase 1 (current) ships single-player with three modes (fixed passage, time, word count). Later phases add realtime multiplayer, Google sign-in, leaderboards, and a stats dashboard.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 16 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS v4 (CSS-first `@theme`)
+- Biome — lint + format
+- Vitest + `@testing-library/react` — unit + smoke tests
+- Playwright — e2e scaffold (no tests yet)
+- pnpm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `pnpm dev` | dev server (Turbopack) |
+| `pnpm build` | production build |
+| `pnpm start` | production server (run after `pnpm build`) |
+| `pnpm lint` | Biome check |
+| `pnpm lint:fix` | Biome check + write |
+| `pnpm typecheck` | `tsc --noEmit` |
+| `pnpm test` | Vitest run |
+| `pnpm test:watch` | Vitest watch |
+| `pnpm e2e` | Playwright (scaffolded; no tests yet) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
 
-## Learn More
+## Phase 1 scope
 
-To learn more about Next.js, take a look at the following resources:
+- `/` — landing page with CTA.
+- `/single-player` — the typing test itself.
+- Three modes: `fixed` (one curated passage), `time` (15/30/60s), `words` (10/25/50/100).
+- Difficulty tiers for time/words: easy (top 200 words), medium (top 1000), hard (top 3000 + occasional punctuation).
+- Live WPM while typing; timer shown in time mode; progress shown in words mode.
+- Results panel: WPM, accuracy, raw WPM, time, char breakdown, Next test / Restart / Change mode.
+- `Tab`+`Enter` → next test (new content). `Esc` → restart (same content).
+- Dark theme default; light toggle in header/footer; preference persists via localStorage.
+- Paste is blocked; "Paste is disabled" toast appears.
+- Framework-free typing engine in `src/lib/engine/` — reused verbatim in Phase 3 multiplayer.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Design spec: `docs/superpowers/specs/2026-04-19-phase-1-single-player-design.md`.
+Implementation plan: `docs/superpowers/plans/2026-04-19-phase-1-single-player.md`.
+Browser-verification report: `docs/superpowers/test-reports/2026-04-19-phase-1-browser-verification.md`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Content
 
-## Deploy on Vercel
+- 60 curated public-domain passages (Aurelius, Seneca, Austen, Dickens, Lincoln, etc.) plus original prose and pangrams.
+- Word lists derived from the Norvig top-frequency English list (public domain), filtered to length ≥ 2 and a small blocklist of profanity and sensitive terms.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Out of scope for Phase 1
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Multiplayer (Socket.io), authentication (NextAuth.js + Google), database (Prisma + Postgres), leaderboards, dashboard, charts, AdSense, mobile soft-keyboard optimization, actual Vercel deploy. All come in Phases 2–4.
