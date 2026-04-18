@@ -45,6 +45,10 @@ function buildEngineConfig(config: TestConfig, regenKey: number): EngineConfig {
 }
 
 export default function SinglePlayerPage() {
+  // Mounted guard: defer all randomized content selection to the client so we
+  // don't emit different text on the server vs the first client render (which
+  // would trigger a React hydration mismatch).
+  const [mounted, setMounted] = useState(false);
   const [config, setConfig] = useState<TestConfig>(() => ({
     mode: DEFAULT_CONFIG.mode,
     fixedLength: DEFAULT_CONFIG.fixedLength,
@@ -63,6 +67,7 @@ export default function SinglePlayerPage() {
       wordsCount: stored.wordsCount,
       difficulty: stored.difficulty,
     });
+    setMounted(true);
   }, []);
 
   const handleConfigChange = useCallback((next: TestConfig) => {
@@ -71,17 +76,29 @@ export default function SinglePlayerPage() {
     setRegenKey((k) => k + 1);
   }, []);
 
-  const engineConfig = useMemo(() => buildEngineConfig(config, regenKey), [config, regenKey]);
+  const engineConfig = useMemo(
+    () => (mounted ? buildEngineConfig(config, regenKey) : null),
+    [mounted, config, regenKey],
+  );
 
   return (
     <section className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-4xl flex-col gap-8 px-6 py-10">
-      <ModeSelector value={config} onChange={handleConfigChange} />
-      <Runner
-        key={`${regenKey}:${engineConfig.mode}`}
-        engineConfig={engineConfig}
-        modeConfig={config}
-        onRegenerate={() => setRegenKey((k) => k + 1)}
-      />
+      <ModeSelector value={config} onChange={handleConfigChange} disabled={!mounted} />
+      {mounted && engineConfig ? (
+        <Runner
+          key={`${regenKey}:${engineConfig.mode}`}
+          engineConfig={engineConfig}
+          modeConfig={config}
+          onRegenerate={() => setRegenKey((k) => k + 1)}
+        />
+      ) : (
+        <div
+          className="flex items-center justify-center text-sm text-[color:var(--muted)]"
+          style={{ minHeight: '12rem' }}
+        >
+          loading...
+        </div>
+      )}
     </section>
   );
 }

@@ -1,0 +1,39 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "typing speed" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - button "Switch to light theme" [ref=e56]: light mode
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - radiogroup "mode" [ref=e9]:
+          - generic [ref=e10]: mode
+          - generic [ref=e11]:
+            - radio "fixed" [ref=e12]
+            - radio "time" [ref=e13]
+            - radio "words" [checked] [ref=e14]
+        - radiogroup "count" [ref=e44]:
+          - generic [ref=e45]: count
+          - generic [ref=e46]:
+            - radio "10" [checked] [ref=e47]
+            - radio "25" [ref=e48]
+            - radio "50" [ref=e49]
+            - radio "100" [ref=e50]
+        - radiogroup "difficulty" [ref=e21]:
+          - generic [ref=e22]: difficulty
+          - generic [ref=e23]:
+            - radio "easy" [checked] [ref=e24]
+            - radio "medium" [ref=e25]
+            - radio "hard" [ref=e26]
+      - generic [ref=e51]:
+        - textbox "typing input" [active]
+        - generic [ref=e52]: were just day find what web see two site b
+        - paragraph [ref=e53]: press any key to start
+  - contentinfo [ref=e30]:
+    - generic [ref=e31]:
+      - generic [ref=e32]: v0.1.0 — phase 1 single-player
+      - button "Switch to dark theme" [ref=e54]: dark mode
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]:
+    - img [ref=e40]
+  - alert [ref=e55]

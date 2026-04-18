@@ -1,0 +1,38 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "typing speed" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - button "Switch to light theme" [ref=e5]: light mode
+  - main [ref=e6]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - radiogroup "mode" [ref=e28]:
+          - generic [ref=e29]: mode
+          - generic [ref=e30]:
+            - radio "fixed" [checked] [ref=e31]
+            - radio "time" [ref=e32]
+            - radio "words" [ref=e33]
+        - radiogroup "length" [ref=e34]:
+          - generic [ref=e35]: length
+          - generic [ref=e36]:
+            - radio "short" [ref=e37]
+            - radio "medium" [checked] [ref=e38]
+            - radio "long" [ref=e39]
+        - radiogroup "difficulty" [disabled] [ref=e40]:
+          - generic [ref=e41]: difficulty
+          - generic [ref=e42]:
+            - radio "easy" [disabled] [ref=e43]
+            - radio "medium" [checked] [disabled] [ref=e44]
+            - radio "hard" [disabled] [ref=e45]
+      - generic [ref=e46]:
+        - textbox "typing input" [active]
+        - generic [ref=e47]: Imagination is more important than knowledge. Knowledge is limited to all we now know and understand, while imagination embraces the entire world, and all there ever will be to know and understand. Logic will get you from A to B, but imagination will take you everywhere. Try not to become a man of success, rather a man of value.
+        - paragraph [ref=e48]: press any key to start
+  - contentinfo [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]: v0.1.0 — phase 1 single-player
+      - button "Switch to light theme" [ref=e15]: light mode
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]:
+    - img [ref=e22]
+  - alert [ref=e25]
