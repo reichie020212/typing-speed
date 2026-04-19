@@ -11,7 +11,9 @@ export function withDatabase(): void {
   });
   beforeEach(async () => {
     if (!hasDatabase) return;
+    await prisma.raceParticipant.deleteMany({});
     await prisma.result.deleteMany({});
+    await prisma.race.deleteMany({});
     await prisma.session.deleteMany({});
     await prisma.account.deleteMany({});
     await prisma.user.deleteMany({});
