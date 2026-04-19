@@ -170,7 +170,7 @@ export class Room {
           status: 'dnf' as const,
           finishPosition: null,
           wpm: (data.wpm as number) ?? 0,
-          rawWpm: (data.wpm as number) ?? 0,
+          rawWpm: 0, // DNF players never finished; rawWpm not tracked during progress events
           accuracy: (data.accuracy as number) ?? 0,
           durationMs: (data.durationMs as number) ?? 0,
         };
