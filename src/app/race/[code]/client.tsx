@@ -3,8 +3,11 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { Countdown } from '@/components/race/Countdown';
 import { Lobby } from '@/components/race/Lobby';
 import { NicknameModal } from '@/components/race/NicknameModal';
+import { RacingView } from '@/components/race/RacingView';
+import { Results } from '@/components/race/Results';
 import { useRaceSocket } from '@/hooks/useRaceSocket';
 import { getStoredNickname, setStoredNickname } from '@/lib/race/nickname-storage';
 
@@ -96,10 +99,31 @@ export function RaceClient({ code, serverUrl, loggedIn }: RaceClientProps) {
     );
   }
 
-  // Placeholder for remaining phases — wired in Tasks 21-22.
-  return (
-    <div className="p-10 text-center text-[color:var(--muted)]">
-      phase: {socket.phase} (coming next)
-    </div>
-  );
+  if (socket.phase === 'countdown') {
+    return (
+      <Countdown
+        secondsRemaining={socket.countdownSeconds}
+        passageText={socket.passageText}
+        players={socket.players}
+      />
+    );
+  }
+
+  if (socket.phase === 'racing') {
+    return (
+      <RacingView
+        passageText={socket.passageText}
+        players={socket.players}
+        mePlayerId={socket.me?.playerId ?? null}
+        onProgress={socket.sendProgress}
+        onFinish={socket.sendFinish}
+      />
+    );
+  }
+
+  if (socket.phase === 'ended' && socket.results) {
+    return <Results results={socket.results} code={code} loggedIn={loggedIn} />;
+  }
+
+  return <div className="p-10 text-center text-[color:var(--muted)]">Loading race\u2026</div>;
 }
