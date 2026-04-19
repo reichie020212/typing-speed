@@ -25,10 +25,7 @@ export type RenameOutcome =
   | { ok: true; username: string }
   | { ok: false; reason: 'invalid' | 'taken' };
 
-export async function renameUsername(
-  userId: string,
-  newUsername: string,
-): Promise<RenameOutcome> {
+export async function renameUsername(userId: string, newUsername: string): Promise<RenameOutcome> {
   if (!isValidUsername(newUsername)) return { ok: false, reason: 'invalid' };
   const existing = await prisma.user.findUnique({ where: { username: newUsername } });
   if (existing && existing.id !== userId) return { ok: false, reason: 'taken' };

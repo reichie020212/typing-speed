@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  RESERVED_USERNAMES,
-  deriveBase,
-  isValidUsername,
-  randomSuffix,
-} from '@/lib/auth/username';
+import { deriveBase, isValidUsername, RESERVED_USERNAMES, randomSuffix } from '@/lib/auth/username';
 
 describe('deriveBase', () => {
   it('strips the email domain', () => {

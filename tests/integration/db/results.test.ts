@@ -3,8 +3,8 @@ import { prisma } from '@/lib/db/client';
 import {
   getUserStats,
   listResultsForUser,
-  saveResult,
   type SaveResultInput,
+  saveResult,
 } from '@/lib/db/results';
 import { hasDatabase, withDatabase } from './helpers';
 

@@ -27,3 +27,7 @@ export const SaveResultSchema = z
   });
 
 export type SaveResultInput = z.infer<typeof SaveResultSchema>;
+
+export type SaveResultActionOutcome =
+  | { ok: true }
+  | { ok: false; reason: 'unauthenticated' | 'invalid' | 'error' };

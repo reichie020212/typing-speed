@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { auth } from '@/auth';
 import { renameUsernameFormAction } from '@/app/actions/username';
+import { auth } from '@/auth';
 import { Button } from '@/components/ui/Button';
 import { isAuthConfigured } from '@/env';
 import { getUserStats } from '@/lib/db/results';

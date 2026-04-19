@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { SaveResultActionOutcome } from '@/app/actions/results';
+import type { SaveResultActionOutcome } from '@/app/actions/results-schema';
 import { LiveWpm } from '@/components/typing/LiveWpm';
 import { ModeSelector, type TestConfig } from '@/components/typing/ModeSelector';
 import { ResultsPanel } from '@/components/typing/ResultsPanel';

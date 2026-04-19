@@ -1,11 +1,13 @@
 # typing-speed
 
-A typing speed game. Phase 1 (current) ships single-player with three modes (fixed passage, time, word count). Later phases add realtime multiplayer, Google sign-in, leaderboards, and a stats dashboard.
+A typing speed game. Phases 1 and 2a shipped. Remaining phases add realtime multiplayer, leaderboards, public profiles, charts, and Vercel deploy polish.
 
 ## Stack
 
 - Next.js 16 (App Router) + React 19 + TypeScript (strict)
 - Tailwind CSS v4 (CSS-first `@theme`)
+- NextAuth v5 (Google) + Prisma + Postgres (Neon)
+- Zod for boundary validation
 - Biome — lint + format
 - Vitest + `@testing-library/react` — unit + smoke tests
 - Playwright — e2e scaffold (no tests yet)
@@ -15,7 +17,7 @@ A typing speed game. Phase 1 (current) ships single-player with three modes (fix
 
 | Command | What it does |
 |---|---|
-| `pnpm dev` | dev server (Turbopack) |
+| `pnpm dev` | dev server |
 | `pnpm build` | production build |
 | `pnpm start` | production server (run after `pnpm build`) |
 | `pnpm lint` | Biome check |
@@ -24,31 +26,34 @@ A typing speed game. Phase 1 (current) ships single-player with three modes (fix
 | `pnpm test` | Vitest run |
 | `pnpm test:watch` | Vitest watch |
 | `pnpm e2e` | Playwright (scaffolded; no tests yet) |
+| `pnpm db:generate` | Generate Prisma client |
+| `pnpm db:migrate:dev` | Run migrations locally |
+| `pnpm db:studio` | Open Prisma Studio |
 
 All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
 
-## Phase 1 scope
+## Current Phase
 
-- `/` — landing page with CTA.
-- `/single-player` — the typing test itself.
-- Three modes: `fixed` (one curated passage), `time` (15/30/60s), `words` (10/25/50/100).
-- Difficulty tiers for time/words: easy (top 200 words), medium (top 1000), hard (top 3000 + occasional punctuation).
-- Live WPM while typing; timer shown in time mode; progress shown in words mode.
-- Results panel: WPM, accuracy, raw WPM, time, char breakdown, Next test / Restart / Change mode.
-- `Tab`+`Enter` → next test (new content). `Esc` → restart (same content).
-- Dark theme default; light toggle in header/footer; preference persists via localStorage.
-- Paste is blocked; "Paste is disabled" toast appears.
-- Framework-free typing engine in `src/lib/engine/` — reused verbatim in Phase 3 multiplayer.
+**Phase 2a — Foundation** (shipped): Google sign-in + Prisma/Postgres persistence + `/dashboard` + `/profile/[username]` + `/history`. Anonymous single-player continues to work.
 
-Design spec: `docs/superpowers/specs/2026-04-19-phase-1-single-player-design.md`.
-Implementation plan: `docs/superpowers/plans/2026-04-19-phase-1-single-player.md`.
-Browser-verification report: `docs/superpowers/test-reports/2026-04-19-phase-1-browser-verification.md`.
+- Design: `docs/superpowers/specs/2026-04-19-phase-2a-foundation-design.md`
+- Setup (required to enable auth locally): `docs/SETUP.md`
+
+**Phase 1** — single-player typing test (shipped).
+
+- Design: `docs/superpowers/specs/2026-04-19-phase-1-single-player-design.md`
+
+## Running without auth configured
+
+The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-player` work anonymously. Protected pages (`/dashboard`, `/profile/[username]`, `/history`) show a "not configured yet" notice until you complete SETUP.md.
 
 ## Content
 
-- 60 curated public-domain passages (Aurelius, Seneca, Austen, Dickens, Lincoln, etc.) plus original prose and pangrams.
+- 60 curated public-domain passages plus original prose and pangrams.
 - Word lists derived from the Norvig top-frequency English list (public domain), filtered to length ≥ 2 and a small blocklist of profanity and sensitive terms.
 
-## Out of scope for Phase 1
+## Out of scope (coming later)
 
-Multiplayer (Socket.io), authentication (NextAuth.js + Google), database (Prisma + Postgres), leaderboards, dashboard, charts, AdSense, mobile soft-keyboard optimization, actual Vercel deploy. All come in Phases 2–4.
+- Phase 2b: leaderboards, public profiles, Recharts, history filters.
+- Phase 3: realtime multiplayer (Socket.io).
+- Phase 4: AdSense, mobile polish, deploy.

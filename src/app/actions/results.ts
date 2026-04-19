@@ -3,14 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { saveResult } from '@/lib/db/results';
-import { SaveResultSchema } from './results-schema';
-
-export { SaveResultSchema } from './results-schema';
-export type { SaveResultInput } from './results-schema';
-
-export type SaveResultActionOutcome =
-  | { ok: true }
-  | { ok: false; reason: 'unauthenticated' | 'invalid' | 'error' };
+import { type SaveResultActionOutcome, SaveResultSchema } from './results-schema';
 
 export async function saveResultAction(input: unknown): Promise<SaveResultActionOutcome> {
   const session = await auth();

@@ -9,9 +9,7 @@ export type RenameUsernameOutcome =
   | { ok: true; username: string }
   | { ok: false; reason: 'unauthenticated' | 'invalid' | 'taken' };
 
-export async function renameUsernameAction(
-  newUsername: string,
-): Promise<RenameUsernameOutcome> {
+export async function renameUsernameAction(newUsername: string): Promise<RenameUsernameOutcome> {
   const session = await auth();
   if (!session?.user?.id) return { ok: false, reason: 'unauthenticated' };
 
