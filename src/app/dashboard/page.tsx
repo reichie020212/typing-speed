@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import { WpmProgressionChart } from '@/components/charts/WpmProgressionChart';
 import { LocalDate } from '@/components/chrome/LocalDate';
 import { requireSession } from '@/lib/auth/guards';
+import { getWpmProgression } from '@/lib/db/leaderboards';
 import { getUserStats, listResultsForUser } from '@/lib/db/results';
 
 function fmtWpm(n: number | null): string {
@@ -23,10 +25,17 @@ function fmtConfig(r: {
 
 export default async function DashboardPage() {
   const session = await requireSession('/dashboard');
-  const [stats, recent] = await Promise.all([
+  const [stats, recent, progression] = await Promise.all([
     getUserStats(session.user.id),
     listResultsForUser(session.user.id, { limit: 5 }),
+    getWpmProgression(session.user.id, { limit: 50 }),
   ]);
+
+  const chartPoints = progression.map((p) => ({
+    createdAt: p.createdAt.toISOString(),
+    wpm: p.wpm,
+    mode: p.mode,
+  }));
 
   return (
     <section className="mx-auto max-w-4xl px-6 py-10">
@@ -52,6 +61,13 @@ export default async function DashboardPage() {
           <ModeBest label="time" value={fmtWpm(stats.bestByMode.time)} />
           <ModeBest label="words" value={fmtWpm(stats.bestByMode.words)} />
         </div>
+      </div>
+
+      <div className="mt-10">
+        <h2 className="mb-3 text-sm uppercase tracking-widest text-[color:var(--muted)]">
+          WPM progression
+        </h2>
+        <WpmProgressionChart points={chartPoints} />
       </div>
 
       <div className="mt-10">
