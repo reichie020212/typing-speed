@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AuthMenu } from './AuthMenu';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Header() {
@@ -11,7 +12,10 @@ export function Header() {
         >
           typing speed
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <AuthMenu />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
