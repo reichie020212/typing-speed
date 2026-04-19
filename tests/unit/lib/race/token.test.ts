@@ -9,11 +9,9 @@ const SECRET = 'test-secret-that-is-at-least-32-characters-long-xx';
 
 describe('race token', () => {
   it('mints and verifies a valid token', async () => {
-    const token = await mintRaceToken(
-      { userId: 'u1', username: 'alice' },
-      SECRET,
-      { ttlSeconds: 300 },
-    );
+    const token = await mintRaceToken({ userId: 'u1', username: 'alice' }, SECRET, {
+      ttlSeconds: 300,
+    });
     const decoded = await verifyRaceToken(token, SECRET);
     expect(decoded.userId).toBe('u1');
     expect(decoded.username).toBe('alice');

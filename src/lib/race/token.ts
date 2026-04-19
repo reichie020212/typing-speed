@@ -26,10 +26,7 @@ export async function mintRaceToken(
     .sign(secretKey(secret));
 }
 
-export async function verifyRaceToken(
-  token: string,
-  secret: string,
-): Promise<RaceTokenPayload> {
+export async function verifyRaceToken(token: string, secret: string): Promise<RaceTokenPayload> {
   const { payload } = await jwtVerify(token, secretKey(secret), { algorithms: [ALG] });
   if (typeof payload.userId !== 'string' || typeof payload.username !== 'string') {
     throw new Error('Invalid race token payload');
