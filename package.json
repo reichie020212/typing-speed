@@ -8,7 +8,7 @@
     "start": "next start",
     "dev:server": "tsx watch server/index.ts",
     "build:server": "tsc -p server/tsconfig.json",
-    "start:server": "node server/dist/index.js",
+    "start:server": "node server/dist/server/index.js",
     "dev:all": "concurrently -n next,server -c blue,green \"pnpm dev\" \"pnpm dev:server\"",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
