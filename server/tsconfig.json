@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "..",
+    "jsx": "preserve",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["../src/*"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "../src/lib/race/**/*.ts",
+    "../src/lib/db/**/*.ts",
+    "../src/lib/engine/**/*.ts",
+    "../src/lib/content/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

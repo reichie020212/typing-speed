@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# server build output
+/server/dist/
+
 # IDE
 .vscode/
 .idea/
