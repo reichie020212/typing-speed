@@ -40,14 +40,20 @@ export async function saveResult(userId: string, input: SaveResultInput): Promis
 export interface ListResultsOpts {
   cursor?: string;
   limit?: number;
+  mode?: 'fixed' | 'time' | 'words';
+  difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 export async function listResultsForUser(
   userId: string,
-  { cursor, limit = 25 }: ListResultsOpts,
+  { cursor, limit = 25, mode, difficulty }: ListResultsOpts,
 ): Promise<{ items: Result[]; nextCursor: string | null }> {
   const items = await prisma.result.findMany({
-    where: { userId },
+    where: {
+      userId,
+      ...(mode ? { mode } : {}),
+      ...(difficulty ? { difficulty } : {}),
+    },
     orderBy: { createdAt: 'desc' },
     take: limit + 1,
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
