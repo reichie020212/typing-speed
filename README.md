@@ -27,6 +27,9 @@ A typing speed game. Phases 1, 2a, and 2b shipped. Remaining: realtime multiplay
 | `pnpm test` | Vitest run |
 | `pnpm test:watch` | Vitest watch |
 | `pnpm e2e` | Playwright (scaffolded; no tests yet) |
+| `pnpm dev:server` | local Socket.io race server |
+| `pnpm build:server` | compile race server for production |
+| `pnpm dev:all` | run Next.js + race server concurrently |
 | `pnpm db:generate` | Generate Prisma client |
 | `pnpm db:migrate:dev` | Run migrations locally |
 | `pnpm db:studio` | Open Prisma Studio |
@@ -34,6 +37,11 @@ A typing speed game. Phases 1, 2a, and 2b shipped. Remaining: realtime multiplay
 All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
 
 ## Current Phase
+
+**Phase 3 — Multiplayer** (shipped): Realtime fixed-passage races at `/race`, up to 8 players per room, mixed guest/auth, Socket.io server in `server/`.
+
+- Design: `docs/superpowers/specs/2026-04-19-phase-3-multiplayer-design.md`
+- Setup: see the "Phase 3: multiplayer" section in `docs/SETUP.md`
 
 **Phase 2b — Social/Competitive** (shipped): Four leaderboards (`/leaderboard`, `/leaderboard/today|weekly|monthly`) with mode-filter tabs, public profiles at `/profile/[username]`, WPM progression chart on dashboard + profile, mode + difficulty filters on `/history`.
 
@@ -59,5 +67,4 @@ The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-p
 
 ## Out of scope (coming later)
 
-- Phase 3: realtime multiplayer (Socket.io).
 - Phase 4: AdSense, mobile polish, Vercel deploy automation.

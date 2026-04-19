@@ -9,12 +9,20 @@ export async function AuthMenu() {
 
   if (!session?.user) {
     return (
-      <Link
-        href="/auth/signin"
-        className="text-xs uppercase tracking-widest text-[color:var(--muted)] hover:text-[color:var(--fg)] transition-colors"
-      >
-        sign in
-      </Link>
+      <div className="flex items-center gap-4">
+        <Link
+          href="/race"
+          className="text-xs uppercase tracking-widest text-[color:var(--muted)] hover:text-[color:var(--fg)] transition-colors"
+        >
+          race
+        </Link>
+        <Link
+          href="/auth/signin"
+          className="text-xs uppercase tracking-widest text-[color:var(--muted)] hover:text-[color:var(--fg)] transition-colors"
+        >
+          sign in
+        </Link>
+      </div>
     );
   }
 
@@ -36,6 +44,7 @@ export async function AuthMenu() {
       </summary>
       <div className="absolute right-0 z-10 mt-2 w-40 rounded-md border border-[color:var(--border)] bg-[color:var(--surface)] py-1 shadow-lg">
         <MenuLink href="/dashboard" label="Dashboard" />
+        <MenuLink href="/race" label="Race" />
         <MenuLink href="/leaderboard" label="Leaderboards" />
         <MenuLink href="/profile/me" label="Profile" />
         <MenuLink href="/history" label="History" />

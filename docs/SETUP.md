@@ -75,3 +75,62 @@ pnpm dev
 - **OAuth error page after Google redirect** — usually a redirect URI mismatch. Double-check the URI list in Google Cloud Console (exact string match required).
 - **"403: access_denied" from Google** — your consent screen is in Testing mode and your email isn't in the test-user list. Add it.
 - **Integration tests fail locally** — they require `DATABASE_URL`. Skip with `DATABASE_URL= pnpm test` or fix the connection string.
+
+## Phase 3: multiplayer (optional)
+
+Phase 3 adds realtime multiplayer races via a standalone Socket.io server deployed alongside the Next.js app. Without these env vars, `/race` renders "Multiplayer not configured yet" and the rest of the app works unchanged.
+
+### Required env vars
+
+Set in **both** Vercel and Railway (or your chosen platform):
+
+- `RACE_SERVER_SECRET` — a 32+ char random string. Generate with:
+
+  ```bash
+  openssl rand -base64 48
+  ```
+
+  This value must match **exactly** on both platforms.
+
+Set in **Vercel only**:
+
+- `NEXT_PUBLIC_RACE_SERVER_URL` — the public URL of the Socket.io server (e.g. `https://typing-race.up.railway.app`).
+
+Set in **Railway only**:
+
+- `DATABASE_URL` — the same Neon connection string used by Vercel (prod branch).
+- `CORS_ORIGIN` — the Vercel production URL (e.g. `https://typing-speed.vercel.app`).
+
+### Railway setup (Socket.io server)
+
+1. Create a new Railway project from this repo.
+2. Set the **Build Command** to `pnpm install && pnpm build:server`.
+3. Set the **Start Command** to `node server/dist/server/index.js`.
+4. Add the env vars above.
+5. Deploy. Railway assigns a `*.up.railway.app` hostname — paste it into `NEXT_PUBLIC_RACE_SERVER_URL` in Vercel.
+
+### Local development
+
+Two terminals:
+
+```bash
+# Terminal 1 — Next.js
+pnpm dev
+
+# Terminal 2 — race server
+pnpm dev:server
+```
+
+Or in a single terminal with `concurrently`:
+
+```bash
+pnpm dev:all
+```
+
+`.env.local` needs:
+
+```
+RACE_SERVER_SECRET=<32+ char string>
+NEXT_PUBLIC_RACE_SERVER_URL=http://localhost:4000
+CORS_ORIGIN=http://localhost:3000
+```
