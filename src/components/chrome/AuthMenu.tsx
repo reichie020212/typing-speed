@@ -36,6 +36,7 @@ export async function AuthMenu() {
       </summary>
       <div className="absolute right-0 z-10 mt-2 w-40 rounded-md border border-[color:var(--border)] bg-[color:var(--surface)] py-1 shadow-lg">
         <MenuLink href="/dashboard" label="Dashboard" />
+        <MenuLink href="/leaderboard" label="Leaderboards" />
         <MenuLink href="/profile/me" label="Profile" />
         <MenuLink href="/history" label="History" />
         <form
