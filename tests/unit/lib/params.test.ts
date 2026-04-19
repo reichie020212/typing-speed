@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  normalizeDifficulty,
-  normalizeMode,
-  normalizeModeFilter,
-  parseOffset,
-} from '@/lib/params';
+import { normalizeDifficulty, normalizeMode, normalizeModeFilter, parseOffset } from '@/lib/params';
 
 describe('normalizeMode', () => {
   it('accepts the three valid modes', () => {

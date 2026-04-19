@@ -61,11 +61,7 @@ export function WpmProgressionChart({ points, emptyMessage }: Props) {
             stroke="var(--muted)"
             tick={{ fill: 'var(--muted)', fontSize: 12 }}
           />
-          <YAxis
-            stroke="var(--muted)"
-            tick={{ fill: 'var(--muted)', fontSize: 12 }}
-            width={36}
-          />
+          <YAxis stroke="var(--muted)" tick={{ fill: 'var(--muted)', fontSize: 12 }} width={36} />
           <Tooltip content={<ChartTooltip />} />
           <Area
             type="monotone"

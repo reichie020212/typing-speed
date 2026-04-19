@@ -1,6 +1,6 @@
 # typing-speed
 
-A typing speed game. Phases 1 and 2a shipped. Remaining phases add realtime multiplayer, leaderboards, public profiles, charts, and Vercel deploy polish.
+A typing speed game. Phases 1, 2a, and 2b shipped. Remaining: realtime multiplayer and Vercel deploy polish.
 
 ## Stack
 
@@ -8,6 +8,7 @@ A typing speed game. Phases 1 and 2a shipped. Remaining phases add realtime mult
 - Tailwind CSS v4 (CSS-first `@theme`)
 - NextAuth v5 (Google) + Prisma + Postgres (Neon)
 - Zod for boundary validation
+- Recharts for WPM progression charts
 - Biome — lint + format
 - Vitest + `@testing-library/react` — unit + smoke tests
 - Playwright — e2e scaffold (no tests yet)
@@ -34,6 +35,10 @@ All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`
 
 ## Current Phase
 
+**Phase 2b — Social/Competitive** (shipped): Four leaderboards (`/leaderboard`, `/leaderboard/today|weekly|monthly`) with mode-filter tabs, public profiles at `/profile/[username]`, WPM progression chart on dashboard + profile, mode + difficulty filters on `/history`.
+
+- Design: `docs/superpowers/specs/2026-04-19-phase-2b-social-design.md`
+
 **Phase 2a — Foundation** (shipped): Google sign-in + Prisma/Postgres persistence + `/dashboard` + `/profile/[username]` + `/history`. Anonymous single-player continues to work.
 
 - Design: `docs/superpowers/specs/2026-04-19-phase-2a-foundation-design.md`
@@ -45,7 +50,7 @@ All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`
 
 ## Running without auth configured
 
-The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-player` work anonymously. Protected pages (`/dashboard`, `/profile/[username]`, `/history`) show a "not configured yet" notice until you complete SETUP.md.
+The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-player` work anonymously. Protected pages and leaderboards show a "not configured yet" notice until you complete SETUP.md.
 
 ## Content
 
@@ -54,6 +59,5 @@ The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-p
 
 ## Out of scope (coming later)
 
-- Phase 2b: leaderboards, public profiles, Recharts, history filters.
 - Phase 3: realtime multiplayer (Socket.io).
-- Phase 4: AdSense, mobile polish, deploy.
+- Phase 4: AdSense, mobile polish, Vercel deploy automation.

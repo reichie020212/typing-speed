@@ -3,9 +3,7 @@ export type Window = 'alltime' | 'today' | 'weekly' | 'monthly';
 export function windowStart(window: Window, now: Date = new Date()): Date | null {
   if (window === 'alltime') return null;
 
-  const midnight = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
-  );
+  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   if (window === 'today') return midnight;
 
   if (window === 'weekly') {

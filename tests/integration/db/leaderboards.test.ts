@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { prisma } from '@/lib/db/client';
 import { getLeaderboard, getWpmProgression } from '@/lib/db/leaderboards';
-import { saveResult, type SaveResultInput } from '@/lib/db/results';
+import { type SaveResultInput, saveResult } from '@/lib/db/results';
 import { hasDatabase, withDatabase } from './helpers';
 
 describe.skipIf(!hasDatabase)('leaderboards', () => {

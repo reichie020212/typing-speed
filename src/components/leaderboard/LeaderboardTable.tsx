@@ -30,13 +30,7 @@ export function LeaderboardTable({ rows }: Props) {
               >
                 {r.image ? (
                   // biome-ignore lint/performance/noImgElement: small avatar in table row.
-                  <img
-                    src={r.image}
-                    alt=""
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
+                  <img src={r.image} alt="" width={20} height={20} className="rounded-full" />
                 ) : (
                   <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[color:var(--faint)] text-[10px] text-[color:var(--fg)]">
                     {r.username.slice(0, 1).toUpperCase()}

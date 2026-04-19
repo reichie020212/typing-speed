@@ -36,8 +36,7 @@ export async function getLeaderboard(opts: {
   const offset = opts.offset ?? 0;
   const start = windowStart(opts.window);
   const minTests = opts.window === 'alltime' ? 0 : 3;
-  const modeFilter: 'fixed' | 'time' | 'words' | null =
-    opts.mode === 'all' ? null : opts.mode;
+  const modeFilter: 'fixed' | 'time' | 'words' | null = opts.mode === 'all' ? null : opts.mode;
 
   const rows = await prisma.$queryRaw<RawRow[]>`
     WITH user_counts AS (

@@ -1,6 +1,4 @@
-export function normalizeMode(
-  raw: string | undefined,
-): 'fixed' | 'time' | 'words' | undefined {
+export function normalizeMode(raw: string | undefined): 'fixed' | 'time' | 'words' | undefined {
   if (raw === 'fixed' || raw === 'time' || raw === 'words') return raw;
   return undefined;
 }
@@ -12,9 +10,7 @@ export function normalizeDifficulty(
   return undefined;
 }
 
-export function normalizeModeFilter(
-  raw: string | undefined,
-): 'all' | 'fixed' | 'time' | 'words' {
+export function normalizeModeFilter(raw: string | undefined): 'all' | 'fixed' | 'time' | 'words' {
   if (raw === 'all') return 'all';
   const v = normalizeMode(raw);
   return v ?? 'all';
