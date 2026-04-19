@@ -283,7 +283,8 @@ On first visit to `/race/[code]` by an unauthenticated user with no `localStorag
 
 ### Component reuse
 
-- Typing surface: extracted from `src/app/single-player/client.tsx` into `src/components/typing/TypingSurface.tsx`. Both single-player and race views consume it.
+- Typing surface: the existing `src/components/typing/TypingSurface.tsx` (already extracted in Phase 2) is reused directly by the race view.
+- Engine integration: the race view uses `useTypingEngine` exactly as `/single-player` does, adding a thin `useRaceSocket` hook on top for progress broadcasts and phase tracking.
 - Race-specific components: `src/components/race/Lobby.tsx`, `Countdown.tsx`, `ProgressRails.tsx`, `Results.tsx`, `NicknameModal.tsx`.
 
 ## 7. Socket Events and Messages
@@ -472,10 +473,9 @@ Implementation plan will decompose these; listed here to size the work:
 3. Server bootstrap (`server/index.ts`, room registry, persistence module) + one happy-path socket integration test.
 4. Next.js API route `POST /api/race` (create race) + `POST /api/race/token` (mint token).
 5. `/race` entry page with create + join flows.
-6. Extract `TypingSurface` from `/single-player` into `src/components/typing/`.
-7. `/race/[code]` client with lobby / countdown / racing / ended views, consuming a `useRaceSocket(code)` hook; race view composes `TypingSurface` with the progress rails.
-8. Graceful-degradation copy, nav integration, docs update.
-9. Railway deploy + Vercel env wiring.
+6. `/race/[code]` client with lobby / countdown / racing / ended views, consuming a `useRaceSocket(code)` hook; race view reuses the existing `TypingSurface` component from `src/components/typing/`.
+7. Graceful-degradation copy, nav integration, docs update.
+8. Railway deploy + Vercel env wiring.
 
 ---
 
