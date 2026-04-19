@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SaveResultSchema } from '@/app/actions/results';
+import { SaveResultSchema } from '@/app/actions/results-schema';
 
 const base = {
   wpm: 70,

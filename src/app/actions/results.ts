@@ -1,31 +1,32 @@
 'use server';
 
-import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
+import { auth } from '@/auth';
+import { saveResult } from '@/lib/db/results';
+import { SaveResultSchema } from './results-schema';
 
-export const SaveResultSchema = z
-  .object({
-    wpm: z.number().min(0).max(400),
-    rawWpm: z.number().min(0).max(500),
-    accuracy: z.number().min(0).max(1),
-    mode: z.enum(['fixed', 'time', 'words']),
-    durationMs: z
-      .number()
-      .int()
-      .min(0)
-      .max(10 * 60 * 1000),
-    difficulty: z.enum(['easy', 'medium', 'hard']),
-    fixedLength: z.enum(['short', 'medium', 'long']).optional(),
-    timeDuration: z.number().int().positive().optional(),
-    wordCount: z.number().int().positive().optional(),
-  })
-  .refine((d) => (d.mode === 'fixed' ? !!d.fixedLength : true), {
-    message: 'fixedLength required for fixed mode',
-  })
-  .refine((d) => (d.mode === 'time' ? !!d.timeDuration : true), {
-    message: 'timeDuration required for time mode',
-  })
-  .refine((d) => (d.mode === 'words' ? !!d.wordCount : true), {
-    message: 'wordCount required for words mode',
-  });
+export { SaveResultSchema } from './results-schema';
+export type { SaveResultInput } from './results-schema';
 
-export type SaveResultInput = z.infer<typeof SaveResultSchema>;
+export type SaveResultActionOutcome =
+  | { ok: true }
+  | { ok: false; reason: 'unauthenticated' | 'invalid' | 'error' };
+
+export async function saveResultAction(input: unknown): Promise<SaveResultActionOutcome> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, reason: 'unauthenticated' };
+
+  const parsed = SaveResultSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, reason: 'invalid' };
+
+  try {
+    await saveResult(session.user.id, parsed.data);
+  } catch (err) {
+    console.error('[saveResultAction] persistence error', err);
+    return { ok: false, reason: 'error' };
+  }
+
+  revalidatePath('/dashboard');
+  revalidatePath('/history');
+  return { ok: true };
+}
