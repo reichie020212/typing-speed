@@ -1,0 +1,39 @@
+name: Integration
+
+on:
+  pull_request:
+    paths:
+      - 'prisma/**'
+      - 'src/lib/db/**'
+      - 'src/lib/race/**'
+      - 'server/**'
+      - 'tests/integration/**'
+      - '.github/workflows/integration.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'prisma/**'
+      - 'src/lib/db/**'
+      - 'src/lib/race/**'
+      - 'server/**'
+      - 'tests/integration/**'
+      - '.github/workflows/integration.yml'
+
+concurrency:
+  group: integration-shared
+  cancel-in-progress: false
+
+jobs:
+  integration:
+    name: integration
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+      NODE_ENV: test
+    steps:
+      - uses: ./.github/actions/setup
+      - run: pnpm db:generate
+      - name: apply migrations to test branch
+        run: pnpm db:migrate:deploy
+      - name: run integration tests
+        run: pnpm test tests/integration

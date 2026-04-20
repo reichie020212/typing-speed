@@ -1,0 +1,34 @@
+name: Smoke
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  railway-healthz:
+    name: railway-healthz
+    runs-on: ubuntu-latest
+    steps:
+      - name: wait for Railway deploy to start
+        run: sleep 30
+
+      - name: poll Railway /healthz
+        env:
+          HEALTH_URL: ${{ secrets.RAILWAY_HEALTH_URL }}
+        run: |
+          if [ -z "$HEALTH_URL" ]; then
+            echo "::warning::RAILWAY_HEALTH_URL secret not configured — skipping smoke test"
+            exit 0
+          fi
+          deadline=$(( $(date +%s) + 300 ))
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            body=$(curl --fail --silent --max-time 10 "$HEALTH_URL" || true)
+            if echo "$body" | grep -q '"ok":true'; then
+              echo "✅ Railway health check passed: $body"
+              exit 0
+            fi
+            echo "…not ready yet; body='$body'; retrying in 15s"
+            sleep 15
+          done
+          echo "::error::Railway health check did not succeed within 5 minutes"
+          exit 1
