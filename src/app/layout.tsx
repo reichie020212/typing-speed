@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AdScripts } from '@/components/ads/AdScripts';
 import { Footer } from '@/components/chrome/Footer';
 import { Header } from '@/components/chrome/Header';
 import { ThemeProvider } from '@/components/chrome/ThemeProvider';
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-theme="dark" className={geistMono.variable}>
       <body className="flex min-h-screen flex-col">
         <ThemeProvider>
+          <AdScripts />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
