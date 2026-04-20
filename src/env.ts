@@ -14,7 +14,11 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 });
 
-export const env = EnvSchema.parse(process.env);
+// Strip entries whose value is the literal string "undefined" (Node coerces
+// `process.env.X = undefined` to "undefined"; we want those treated as absent).
+const rawEnv = Object.fromEntries(Object.entries(process.env).filter(([, v]) => v !== 'undefined'));
+
+export const env = EnvSchema.parse(rawEnv);
 
 export function isAuthConfigured(): boolean {
   return !!(env.DATABASE_URL && env.AUTH_SECRET && env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET);
