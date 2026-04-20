@@ -11,8 +11,8 @@ describe('AdSlot', () => {
   });
 
   it('renders null when env vars are unset', async () => {
-    process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID = undefined;
-    process.env.NEXT_PUBLIC_ADSENSE_ENABLED = undefined;
+    delete process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
+    delete process.env.NEXT_PUBLIC_ADSENSE_ENABLED;
     const { AdSlot } = await import('@/components/ads/AdSlot');
     const { container } = render(<AdSlot slotId="1234567890" />);
     expect(container.querySelector('ins')).toBeNull();
