@@ -6,6 +6,11 @@ const EnvSchema = z.object({
   AUTH_GOOGLE_ID: z.string().min(1).optional(),
   AUTH_GOOGLE_SECRET: z.string().min(1).optional(),
   AUTH_URL: z.string().url().optional(),
+  NEXT_PUBLIC_ADSENSE_PUBLISHER_ID: z
+    .string()
+    .regex(/^ca-pub-\d+$/)
+    .optional(),
+  NEXT_PUBLIC_ADSENSE_ENABLED: z.enum(['true', 'false']).optional(),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 });
 
