@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { AD_SLOTS } from '@/components/ads/slot-ids';
 import { LocalDate } from '@/components/chrome/LocalDate';
 import { HistoryFilterTabs } from '@/components/history/HistoryFilterTabs';
 import { requireSession } from '@/lib/auth/guards';
@@ -92,6 +94,8 @@ export default async function HistoryPage({ searchParams }: Props) {
         />
       </div>
 
+      <AdSlot slotId={AD_SLOTS.historyTop} className="my-6" />
+
       {items.length === 0 ? (
         hasFilter ? (
           <p className="text-sm text-[color:var(--muted)]">No results match these filters.</p>
@@ -132,6 +136,7 @@ export default async function HistoryPage({ searchParams }: Props) {
               ))}
             </tbody>
           </table>
+          <AdSlot slotId={AD_SLOTS.historyBottom} className="my-6" />
           {loadMoreHref ? (
             <div className="mt-6 text-center">
               <Link
