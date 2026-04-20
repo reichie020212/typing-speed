@@ -76,74 +76,14 @@ pnpm dev
 - **"403: access_denied" from Google** — your consent screen is in Testing mode and your email isn't in the test-user list. Add it.
 - **Integration tests fail locally** — they require `DATABASE_URL`. Skip with `DATABASE_URL= pnpm test` or fix the connection string.
 
-## Phase 3: multiplayer (optional)
-
-Phase 3 adds realtime multiplayer races via a standalone Socket.io server deployed alongside the Next.js app. Without these env vars, `/race` renders "Multiplayer not configured yet" and the rest of the app works unchanged.
-
-### Required env vars
-
-Set in **both** Vercel and Railway (or your chosen platform):
-
-- `RACE_SERVER_SECRET` — a 32+ char random string. Generate with:
-
-  ```bash
-  openssl rand -base64 48
-  ```
-
-  This value must match **exactly** on both platforms.
-
-Set in **Vercel only**:
-
-- `NEXT_PUBLIC_RACE_SERVER_URL` — the public URL of the Socket.io server (e.g. `https://typing-race.up.railway.app`).
-
-Set in **Railway only**:
-
-- `DATABASE_URL` — the same Neon connection string used by Vercel (prod branch).
-- `CORS_ORIGIN` — the Vercel production URL (e.g. `https://typing-speed.vercel.app`).
-
-### Railway setup (Socket.io server)
-
-1. Create a new Railway project from this repo.
-2. Set the **Build Command** to `pnpm install && pnpm build:server`.
-3. Set the **Start Command** to `node server/dist/server/index.js`.
-4. Add the env vars above.
-5. Deploy. Railway assigns a `*.up.railway.app` hostname — paste it into `NEXT_PUBLIC_RACE_SERVER_URL` in Vercel.
-
-### Local development
-
-Two terminals:
-
-```bash
-# Terminal 1 — Next.js
-pnpm dev
-
-# Terminal 2 — race server
-pnpm dev:server
-```
-
-Or in a single terminal with `concurrently`:
-
-```bash
-pnpm dev:all
-```
-
-`.env.local` needs:
-
-```
-RACE_SERVER_SECRET=<32+ char string>
-NEXT_PUBLIC_RACE_SERVER_URL=http://localhost:4000
-CORS_ORIGIN=http://localhost:3000
-```
-
 ## CI & Deploy Automation
 
-Three GitHub Actions workflows protect the repo:
+Two GitHub Actions workflows protect the repo:
 
 | Workflow | Trigger | Purpose |
 |---|---|---|
-| `ci.yml` | PR + push to `main` | Lint, typecheck, unit tests, Next.js build, server build |
-| `integration.yml` | PR + push to `main` (DB/server path filter) | Run integration tests against Neon test branch |
-| `smoke.yml` | Push to `main` | Poll Railway's `/healthz` after auto-deploy |
+| `ci.yml` | PR + push to `main` | Lint, typecheck, unit tests, Next.js build |
+| `integration.yml` | PR + push to `main` (DB path filter) | Run integration tests against Neon test branch |
 
 ### One-time setup
 
@@ -158,9 +98,8 @@ GitHub → repo → Settings → Secrets and variables → Actions → New repos
 | Secret | Value |
 |---|---|
 | `DATABASE_URL_TEST` | The `test`-branch pooled connection string from Neon |
-| `RAILWAY_HEALTH_URL` | Full URL of Railway's public `/healthz`, e.g. `https://typing-race-production.up.railway.app/healthz` |
 
-**3. Push a trivial commit and watch the Actions tab.** Verify all three workflows fire as expected — CI passes, integration applies the migration and passes, smoke waits for Railway and passes.
+**3. Push a trivial commit and watch the Actions tab.** Verify both workflows fire as expected — CI passes, integration applies the migration and passes.
 
 **4. Enable branch protection.**
 
@@ -171,17 +110,13 @@ GitHub → repo → Settings → Branches → "Add branch protection rule" for `
   - `typecheck`
   - `test-unit`
   - `build`
-  - `build-server`
   - `integration`
 - Require branches to be up to date before merging.
 - Disallow force pushes.
 - Disallow branch deletion.
 
-The `smoke` workflow is deliberately **not** a required check — it runs after merge, not before.
-
 ### Troubleshooting
 
 - **Integration test schema drift** — Reset the `test` branch from `main` in Neon, then re-run CI.
-- **Smoke test flakes on cold deploys** — Bump the poll timeout in `.github/workflows/smoke.yml` from 5 min to 10 min.
 - **Emergency hotfix bypassing protection** — As repo admin you can temporarily disable the protection rule in GitHub settings, push the fix, re-enable. Use sparingly.
 - **A PR doesn't trigger integration.yml** — Check its path filter. PRs that touch only UI / content skip the integration workflow by design. Add the affected path to the filter if it's missing.

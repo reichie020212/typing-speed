@@ -1,6 +1,6 @@
 # typing-speed
 
-A typing speed game. Phases 1, 2a, and 2b shipped. Remaining: realtime multiplayer and Vercel deploy polish.
+A typing speed game. Phases 1, 2a, 2b, and 4 (deploy automation) shipped. Phase 3 (realtime multiplayer) was built and then rolled back; the preserved implementation lives on the `feat/multiplayer` branch.
 
 ## Stack
 
@@ -27,9 +27,6 @@ A typing speed game. Phases 1, 2a, and 2b shipped. Remaining: realtime multiplay
 | `pnpm test` | Vitest run |
 | `pnpm test:watch` | Vitest watch |
 | `pnpm e2e` | Playwright (scaffolded; no tests yet) |
-| `pnpm dev:server` | local Socket.io race server |
-| `pnpm build:server` | compile race server for production |
-| `pnpm dev:all` | run Next.js + race server concurrently |
 | `pnpm db:generate` | Generate Prisma client |
 | `pnpm db:migrate:dev` | Run migrations locally |
 | `pnpm db:studio` | Open Prisma Studio |
@@ -38,10 +35,9 @@ All four must pass before committing: `pnpm lint`, `pnpm typecheck`, `pnpm test`
 
 ## Current Phase
 
-**Phase 3 — Multiplayer** (shipped): Realtime fixed-passage races at `/race`, up to 8 players per room, mixed guest/auth, Socket.io server in `server/`.
+**Phase 4 — Deploy Automation** (shipped): CI workflows (`.github/workflows/ci.yml`, `integration.yml`), composite setup action, PR template, and SETUP.md documentation for Neon test branch + branch protection rules.
 
-- Design: `docs/superpowers/specs/2026-04-19-phase-3-multiplayer-design.md`
-- Setup: see the "Phase 3: multiplayer" section in `docs/SETUP.md`
+- Design: `docs/superpowers/specs/2026-04-19-phase-4-deploy-automation-design.md`
 
 **Phase 2b — Social/Competitive** (shipped): Four leaderboards (`/leaderboard`, `/leaderboard/today|weekly|monthly`) with mode-filter tabs, public profiles at `/profile/[username]`, WPM progression chart on dashboard + profile, mode + difficulty filters on `/history`.
 
@@ -65,6 +61,10 @@ The app builds and runs without Neon / Google OAuth env vars. `/` and `/single-p
 - 60 curated public-domain passages plus original prose and pangrams.
 - Word lists derived from the Norvig top-frequency English list (public domain), filtered to length ≥ 2 and a small blocklist of profanity and sensitive terms.
 
+## Rolled back
+
+**Phase 3 — Multiplayer** was built and then rolled back from main. The complete implementation (Socket.io server, race lobby/countdown/racing/results UI, race persistence) is preserved on the `feat/multiplayer` branch. Historical design and plan docs remain in `docs/superpowers/`.
+
 ## Out of scope (coming later)
 
-- Phase 4: AdSense, mobile polish, Vercel deploy automation.
+- AdSense, mobile polish, Playwright e2e test suite.
