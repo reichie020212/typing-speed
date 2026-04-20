@@ -1,3 +1,5 @@
+import { AdSlot } from '@/components/ads/AdSlot';
+import { AD_SLOTS } from '@/components/ads/slot-ids';
 import { isAuthConfigured } from '@/env';
 import { getLeaderboard } from '@/lib/db/leaderboards';
 import { type Window, windowDeadline } from '@/lib/db/time-windows';
@@ -64,6 +66,8 @@ export async function LeaderboardPage({ window, searchParams }: Props) {
       </header>
 
       <ModeTabs pathname={pathname} active={mode} />
+
+      <AdSlot slotId={AD_SLOTS.leaderboard} className="my-6" />
 
       <div className="mt-6">
         {rows.length === 0 ? (
