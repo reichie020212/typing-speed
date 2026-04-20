@@ -120,3 +120,50 @@ GitHub → repo → Settings → Branches → "Add branch protection rule" for `
 - **Integration test schema drift** — Reset the `test` branch from `main` in Neon, then re-run CI.
 - **Emergency hotfix bypassing protection** — As repo admin you can temporarily disable the protection rule in GitHub settings, push the fix, re-enable. Use sparingly.
 - **A PR doesn't trigger integration.yml** — Check its path filter. PRs that touch only UI / content skip the integration workflow by design. Add the affected path to the filter if it's missing.
+
+## AdSense
+
+Typing Speed is wired to serve Google AdSense ads on dashboard, history, leaderboard, and profile pages. Until the site is approved by AdSense and the env vars below are set, `<AdSlot>` components render null and no AdSense script loads.
+
+### Pre-application checklist
+
+Before submitting the site to AdSense:
+
+1. Production deployment is live on Vercel with substantial typing content.
+2. `/privacy`, `/terms`, `/about` pages exist and are reachable from the footer.
+3. `public/ads.txt` file exists (placeholder is fine; real value comes after approval).
+4. No ads are displaying yet — this is correct behavior pre-approval.
+
+### Application
+
+1. Apply at <https://www.google.com/adsense/start/>.
+2. Use your production domain.
+3. Wait for review. Approvals typically take days to weeks.
+
+### Post-approval rollout
+
+In order:
+
+1. **AdSense dashboard → Sites** — confirm site is verified.
+2. **AdSense dashboard → Ads → By ad unit** — create 5 ad units matching the slot registry: `dashboard`, `history-top`, `history-bottom`, `leaderboard`, `profile`. Any ad unit type is fine (Display is the default). Copy each unit's slot ID.
+3. **Update `src/components/ads/slot-ids.ts`** with the real IDs. Commit.
+4. **Edit `public/ads.txt`** — uncomment the line and replace `REPLACE_WITH_YOUR_PUB_ID` with your real publisher ID (e.g. `pub-1234567890123456`). Commit.
+5. **Set Vercel production env vars**:
+   - `NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-1234567890123456`
+   - `NEXT_PUBLIC_ADSENSE_ENABLED=true`
+6. **Redeploy** production.
+7. **AdSense dashboard → Privacy & messaging → Configure EU messaging** — enable Funding Choices with the default template.
+8. **Verify live**:
+   - Open production in an incognito window. Visit `/dashboard` or `/leaderboard`. An ad should eventually load.
+   - Open production from an EU VPN. Funding Choices consent banner should appear.
+
+### Emergency kill switch
+
+Set `NEXT_PUBLIC_ADSENSE_ENABLED=false` in Vercel and redeploy. No code change required.
+
+### Troubleshooting
+
+- **Ads blocked by extensions** — test with ad blockers disabled.
+- **New approval delay** — fill rate is often low for the first 48-72 hours. Normal.
+- **Application rejection** — common causes include thin content, missing legal pages, or policy issues. Fix and resubmit (Google allows multiple attempts).
+- **`ads.txt` errors in AdSense dashboard** — verify `https://<prod-domain>/ads.txt` returns 200 with the uncommented line containing your real publisher ID.

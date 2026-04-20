@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { AD_SLOTS } from '@/components/ads/slot-ids';
 import { WpmProgressionChart } from '@/components/charts/WpmProgressionChart';
 import { LocalDate } from '@/components/chrome/LocalDate';
 import { requireSession } from '@/lib/auth/guards';
@@ -62,6 +64,8 @@ export default async function DashboardPage() {
           <ModeBest label="words" value={fmtWpm(stats.bestByMode.words)} />
         </div>
       </div>
+
+      <AdSlot slotId={AD_SLOTS.dashboard} className="my-8" />
 
       <div className="mt-10">
         <h2 className="mb-3 text-sm uppercase tracking-widest text-[color:var(--muted)]">
