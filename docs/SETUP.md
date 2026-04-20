@@ -134,3 +134,54 @@ RACE_SERVER_SECRET=<32+ char string>
 NEXT_PUBLIC_RACE_SERVER_URL=http://localhost:4000
 CORS_ORIGIN=http://localhost:3000
 ```
+
+## CI & Deploy Automation
+
+Three GitHub Actions workflows protect the repo:
+
+| Workflow | Trigger | Purpose |
+|---|---|---|
+| `ci.yml` | PR + push to `main` | Lint, typecheck, unit tests, Next.js build, server build |
+| `integration.yml` | PR + push to `main` (DB/server path filter) | Run integration tests against Neon test branch |
+| `smoke.yml` | Push to `main` | Poll Railway's `/healthz` after auto-deploy |
+
+### One-time setup
+
+**1. Create a Neon `test` branch.**
+
+In the Neon dashboard → Branches → "Create branch" from `main`, name it `test`. Copy its pooled connection string.
+
+**2. Add GitHub repo secrets.**
+
+GitHub → repo → Settings → Secrets and variables → Actions → New repository secret:
+
+| Secret | Value |
+|---|---|
+| `DATABASE_URL_TEST` | The `test`-branch pooled connection string from Neon |
+| `RAILWAY_HEALTH_URL` | Full URL of Railway's public `/healthz`, e.g. `https://typing-race-production.up.railway.app/healthz` |
+
+**3. Push a trivial commit and watch the Actions tab.** Verify all three workflows fire as expected — CI passes, integration applies the migration and passes, smoke waits for Railway and passes.
+
+**4. Enable branch protection.**
+
+GitHub → repo → Settings → Branches → "Add branch protection rule" for `main`:
+- Require a pull request before merging (enforced for admins too).
+- Require status checks to pass before merging. Select:
+  - `lint`
+  - `typecheck`
+  - `test-unit`
+  - `build`
+  - `build-server`
+  - `integration`
+- Require branches to be up to date before merging.
+- Disallow force pushes.
+- Disallow branch deletion.
+
+The `smoke` workflow is deliberately **not** a required check — it runs after merge, not before.
+
+### Troubleshooting
+
+- **Integration test schema drift** — Reset the `test` branch from `main` in Neon, then re-run CI.
+- **Smoke test flakes on cold deploys** — Bump the poll timeout in `.github/workflows/smoke.yml` from 5 min to 10 min.
+- **Emergency hotfix bypassing protection** — As repo admin you can temporarily disable the protection rule in GitHub settings, push the fix, re-enable. Use sparingly.
+- **A PR doesn't trigger integration.yml** — Check its path filter. PRs that touch only UI / content skip the integration workflow by design. Add the affected path to the filter if it's missing.
